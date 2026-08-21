@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* ============================================
+   DESIGN TOKENS
+   ============================================ */
+
+:root {
+  /* Colors */
+  --color-white: #FFFFFF;
+  --color-rosa: #D94F8A;
+  --color-rosa-light: #F0A4C4;
+  --color-azul: #6B8CCE;
+  --color-azul-light: #A8C4F0;
+  --color-negro: #1A1A1A;
+  --color-gris: #8A7E72;
+  --color-border: #F0ECE6;
+
+  /* Gradients */
+  --gradient-bar: linear-gradient(90deg, #6B8CCE, #D94F8A, #F0A4C4);
+  --gradient-glass: linear-gradient(135deg, #D94F8A, #9B6CB8, #6B8CCE);
+
+  /* Typography sizes */
+  --size-hero-script: 56px;
+  --size-hero-serif: 62px;
+  --size-h2: 24px;
+  --size-body: 15px;
+  --size-label: 13px;
+  --size-metadata: 11px;
+
+  /* Typography tracking */
+  --tracking-label: 3px;
+  --tracking-metadata: 2px;
+
+  /* Radii */
+  --radius-glass: 24px;
+  --radius-card: 14px;
+  --radius-card-lg: 18px;
+  --radius-pill: 50px;
+  --radius-input: 12px;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-blur: 16px;
+  --glass-border-width: 1.5px;
+
+  /* Nebulosa */
+  --nebulosa-blur: 60px;
+  --nebulosa-opacity: 0.12;
+}
+
+@theme inline {
+  --font-serif: var(--font-playfair);
+  --font-script: var(--font-dancing);
+  --font-sans: var(--font-dm-sans);
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+
+body {
+  background: var(--color-white);
+  color: var(--color-negro);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: var(--size-body);
+  min-height: 100vh;
+}
+
+/* ============================================
+   GLASS BORDER (pseudo-element technique)
+   ============================================ */
+
+.glass-border {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-glass);
+}
+
+.glass-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--glass-border-width);
+  background: var(--gradient-glass);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fillBar {
+  from { width: 0%; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Animation utilities */
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+.animate-scale-in { animation: scaleIn 0.5s ease-out forwards; }
+.animate-slide-in { animation: slideInRight 0.5s ease-out forwards; }
+.animate-fill-bar { animation: fillBar 1.5s ease-out forwards; }
+.animate-pulse-soft { animation: pulse 2s ease-in-out infinite; }
+.animate-marquee { animation: marquee 20s linear infinite; }
+
+/* Stagger delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
