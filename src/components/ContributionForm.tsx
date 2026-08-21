@@ -9,6 +9,12 @@ interface ContributionFormProps {
   onSuccess: () => void;
 }
 
+const steps = [
+  "Transferí el monto que quieras al alias de abajo",
+  "Completá tu nombre y cuánto mandaste",
+  `Dejale un mensajito a ${PERSON_NAME} (¡los va a leer todos!)`,
+];
+
 export default function ContributionForm({
   onSuccess,
 }: ContributionFormProps) {
@@ -62,14 +68,28 @@ export default function ContributionForm({
 
   return (
     <Section maxWidth="form" id="contribuir">
-      <SectionTitle>¿Cómo participo?</SectionTitle>
+      <SectionTitle>Como participo?</SectionTitle>
 
-      <div className="mb-8 space-y-2 text-sm text-[var(--color-gris)]">
-        <p>1. Transferí el monto que quieras al alias de abajo</p>
-        <p>2. Completá tu nombre y cuánto mandaste</p>
-        <p>3. Dejale un mensajito a {PERSON_NAME} (¡los va a leer todos!)</p>
-        <p className="pt-1">A medida que juntemos, vamos desbloqueando regalos 🎁</p>
-      </div>
+      {/* Los pasos, numerados como una lista de tareas del juego */}
+      <ol className="mb-8 space-y-3">
+        {steps.map((step, i) => (
+          <li key={i} className="flex items-start gap-3">
+            <span
+              className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold bg-[image:var(--gradient-cta)] border-2 border-white shadow-[0_3px_8px_-2px_rgba(11,127,180,0.6)]"
+              style={{ fontFamily: "var(--font-fredoka)" }}
+            >
+              {i + 1}
+            </span>
+            <span className="text-sm pt-1 text-[var(--color-slate)]">
+              {step}
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <p className="mb-8 text-sm text-center font-semibold text-[var(--color-plumbob-deep)]">
+        A medida que juntemos, vamos desbloqueando regalos 🎁
+      </p>
 
       <PaymentInfo />
 
@@ -105,6 +125,7 @@ export default function ContributionForm({
 
         <Button
           type="submit"
+          variant="green"
           fullWidth
           disabled={status === "submitting"}
         >
@@ -112,7 +133,7 @@ export default function ContributionForm({
         </Button>
 
         {status === "success" && (
-          <p className="text-center text-sm animate-fade-in-up text-[var(--color-rosa)]">
+          <p className="text-center text-sm font-semibold animate-fade-in-up text-[var(--color-plumbob-deep)]">
             Tu mensaje va a aparecer en el muro
           </p>
         )}

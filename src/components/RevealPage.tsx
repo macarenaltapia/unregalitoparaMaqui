@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Nebulosa, Section, SectionTitle } from "@/components/ui";
+import { Nebulosa, Section, SectionTitle, Plumbob } from "@/components/ui";
 import ProgressBar from "./ProgressBar";
 import MessageWall from "./MessageWall";
 import { ContributionsResponse } from "@/types";
@@ -33,71 +33,79 @@ export default function RevealPage() {
   }, [fetchData]);
 
   return (
-    <main className="min-h-screen bg-[#FBF8F5]">
-      <section className="relative text-center py-20 md:py-28 px-6 animate-fade-in overflow-hidden">
-        <Nebulosa color="rosa" position="top-right" size="lg" />
-        <Nebulosa color="azul" position="bottom-left" size="lg" />
+    <main className="min-h-screen">
+      <section className="relative text-center py-20 md:py-28 px-6 animate-fade-in overflow-hidden iso-grid">
+        <Nebulosa color="cyan" position="top-right" size="lg" />
+        <Nebulosa color="plumbob" position="bottom-left" size="lg" />
 
-        <span
-          className="block text-[48px] md:text-[56px] text-[#D94F8A] mb-2"
-          style={{ fontFamily: "var(--font-dancing)" }}
-        >
-          Gracias a todos
-        </span>
-        <h1
-          className="text-[40px] md:text-[56px] font-semibold text-[#1A1A1A] leading-tight"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
-          Llegamos con estos regalos
+        <div className="relative flex justify-center mb-6">
+          <Plumbob size={72} animation="spin" className="animate-plumbob-pulse" />
+        </div>
+
+        <h1>
+          <span className="sims-title sims-title-sm block text-[26px] md:text-[36px]">
+            Gracias a todos
+          </span>
+          <span className="sims-title block text-[42px] md:text-[64px] -mt-1">
+            Llegamos con estos regalos
+          </span>
         </h1>
-        <p className="text-lg md:text-xl max-w-md mx-auto leading-relaxed text-[#8A7E72] mt-6">
+        <p className="text-lg md:text-xl max-w-md mx-auto leading-relaxed text-[var(--color-slate)] mt-6">
           {PERSON_NAME} ya tiene sus regalos gracias a cada uno de ustedes{" "}
           {PERSON_EMOJI}
         </p>
       </section>
 
       <div
-        className="overflow-hidden py-3 select-none"
+        className="overflow-hidden py-3 select-none border-y-2 border-white/60"
         style={{
-          background: "linear-gradient(90deg, #6B8CCE, #9B6CB8, #D94F8A)",
+          background:
+            "linear-gradient(90deg, #0B7FB4, #16B6E8, #2FD44A, #16B6E8, #0B7FB4)",
+          boxShadow: "0 4px 20px -6px rgba(11, 127, 180, 0.6)",
         }}
       >
         <div className="animate-marquee flex w-max">
           {[0, 1].map((i) => (
             <span
               key={i}
-              className="text-sm md:text-base font-medium tracking-wide text-white px-2"
-              style={{ fontFamily: "var(--font-dm)" }}
+              className="text-sm md:text-base font-semibold tracking-wide text-white px-2"
+              style={{
+                fontFamily: "var(--font-fredoka)",
+                textShadow: "0 1px 3px rgba(10, 42, 64, 0.4)",
+              }}
             >
-              {Array(8).fill("🎁 Misión cumplida").join("  |  ")}
+              {Array(8).fill("🎁 Misión cumplida").join("  ◆  ")}
             </span>
           ))}
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center py-10">
-          <div className="inline-block w-6 h-6 rounded-full border-2 animate-spin border-[#D94F8A] border-t-transparent" />
+        <div className="flex justify-center py-14">
+          <Plumbob size={44} animation="spin" />
         </div>
       ) : (
         <ProgressBar total={data.total} />
       )}
 
       <Section>
-        <SectionTitle>La cumpleañera con sus regalos</SectionTitle>
-        <div className="rounded-[var(--radius-card)] overflow-hidden border border-[var(--color-border)] shadow-sm">
-          {/* Subí la foto a public/gifts/reveal.jpg antes de activar el modo reveal */}
-          <img
-            src="/gifts/reveal.jpg"
-            alt={`${PERSON_NAME} con sus regalos`}
-            className="w-full h-auto"
-          />
+        <SectionTitle>La festejada con sus regalos</SectionTitle>
+        <div className="sims-panel p-1.5">
+          <div className="relative z-10 rounded-[calc(var(--radius-card)-4px)] overflow-hidden">
+            {/* Subí la foto a public/gifts/reveal.jpg antes de activar el modo reveal */}
+            <img
+              src="/gifts/reveal.jpg"
+              alt={`${PERSON_NAME} con sus regalos`}
+              className="w-full h-auto block"
+            />
+          </div>
         </div>
       </Section>
 
       <MessageWall messages={data.messages} />
 
-      <footer className="text-center py-10 text-xs text-[#8A7E72]">
+      <footer className="flex items-center justify-center gap-2 py-10 text-xs font-semibold text-[var(--color-slate)]">
+        <Plumbob size={16} />
         {EVENT_DATE_SHORT}
       </footer>
     </main>

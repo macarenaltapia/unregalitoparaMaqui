@@ -1,42 +1,51 @@
 export const colors = {
   white: "#FFFFFF",
-  rosa: "#D94F8A",
-  rosaLight: "#F0A4C4",
-  azul: "#6B8CCE",
-  azulLight: "#A8C4F0",
-  negro: "#1A1A1A",
-  gris: "#8A7E72",
-  border: "#F0ECE6",
+  // Plumbob — el verde del diamante que flota sobre los Sims
+  plumbob: "#2FD44A",
+  plumbobLight: "#9BF7A4",
+  plumbobDeep: "#12A33A",
+  // Cyan de la interfaz del juego
+  cyan: "#16B6E8",
+  cyanLight: "#8FE3FB",
+  cyanDeep: "#0B7FB4",
+  // Azules de fondo y texto
+  navy: "#0A2A40",
+  slate: "#5E8299",
+  sky: "#E4F4FD",
+  skyDeep: "#C7E9F8",
+  border: "#BFE4F5",
   gradient: {
-    bar: "linear-gradient(90deg, #6B8CCE, #D94F8A, #F0A4C4)",
-    glass: "linear-gradient(135deg, #D94F8A, #9B6CB8, #6B8CCE)",
+    bar: "linear-gradient(90deg, #12A33A, #2FD44A, #9BF7A4)",
+    panel: "linear-gradient(135deg, #16B6E8, #2FD44A, #8FE3FB)",
+    cta: "linear-gradient(180deg, #35C9F2 0%, #16B6E8 50%, #0B7FB4 100%)",
+    ctaGreen: "linear-gradient(180deg, #56E86E 0%, #2FD44A 50%, #12A33A 100%)",
+    sky: "linear-gradient(180deg, #F4FBFF 0%, #E4F4FD 55%, #D3EDFA 100%)",
   },
 } as const;
 
 export const typography = {
-  serif: "var(--font-playfair), Georgia, serif",
-  script: "var(--font-dancing), cursive",
-  sans: "var(--font-dm-sans), system-ui, sans-serif",
+  display: "var(--font-fredoka), system-ui, sans-serif",
+  sans: "var(--font-nunito), system-ui, sans-serif",
   sizes: {
-    heroScript: "56px",
-    heroSerif: "62px",
-    h2: "24px",
+    heroScript: "52px",
+    heroSerif: "64px",
+    h2: "28px",
     body: "15px",
-    label: "13px",
+    label: "12px",
     metadata: "11px",
   },
   tracking: {
-    label: "3px",
+    label: "2.5px",
     metadata: "2px",
   },
 } as const;
 
 export const radius = {
-  glass: "24px",
-  card: "14px",
-  cardLg: "18px",
+  glass: "28px",
+  card: "20px",
+  cardLg: "24px",
   pill: "50px",
-  input: "12px",
+  input: "16px",
   full: "9999px",
 } as const;
 
@@ -47,17 +56,18 @@ export const spacing = {
   maxForm: "max-w-lg",
 } as const;
 
-export const glass = {
-  background: "rgba(255, 255, 255, 0.45)",
-  blur: "blur(16px)",
-  borderWidth: "1.5px",
+export const panel = {
+  background: "rgba(255, 255, 255, 0.72)",
+  blur: "blur(14px)",
+  borderWidth: "2px",
+  shadow: "0 10px 30px -8px rgba(11, 127, 180, 0.35)",
 } as const;
 
 export const nebulosa = {
-  opacity: { min: 0.1, max: 0.16 },
-  blur: "60px",
+  opacity: { min: 0.18, max: 0.26 },
+  blur: "70px",
   colors: {
-    rosa: ["#D94F8A", "#F0A4C4"],
-    azul: ["#6B8CCE", "#A8C4F0"],
+    plumbob: ["#2FD44A", "#9BF7A4"],
+    cyan: ["#16B6E8", "#8FE3FB"],
   },
 } as const;

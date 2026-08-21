@@ -8,6 +8,7 @@ import GiftList from "@/components/GiftList";
 import ContributionForm from "@/components/ContributionForm";
 import MessageWall from "@/components/MessageWall";
 import RevealPage from "@/components/RevealPage";
+import { Plumbob } from "@/components/ui";
 
 import { ContributionsResponse } from "@/types";
 import { EVENT_DATE_SHORT } from "@/data/config";
@@ -36,20 +37,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    // Modo demo para probar la habitacion sin depender de la base:
+    // /?demo=130000 fuerza ese total. Solo corre en desarrollo.
+    if (process.env.NODE_ENV === "development") {
+      const demo = new URLSearchParams(window.location.search).get("demo");
+      if (demo !== null) {
+        setData({ total: Number(demo) || 0, messages: [] });
+        setLoading(false);
+        return;
+      }
+    }
+
     fetchData();
   }, [fetchData]);
 
   if (isReveal) return <RevealPage />;
 
   return (
-    <main className="min-h-screen bg-[#FBF8F5]">
+    <main className="min-h-screen">
       <Hero />
 
       <Marquee />
 
       {loading ? (
-        <div className="text-center py-10">
-          <div className="inline-block w-6 h-6 rounded-full border-2 animate-spin border-[#D94F8A] border-t-transparent" />
+        // El plumbob girando hace de spinner, como en la pantalla de carga
+        <div className="flex justify-center py-14">
+          <Plumbob size={44} animation="spin" />
         </div>
       ) : (
         <>
@@ -62,7 +75,8 @@ export default function Home() {
 
       <ContributionForm onSuccess={fetchData} />
 
-      <footer className="text-center py-10 text-xs text-[#8A7E72]">
+      <footer className="flex items-center justify-center gap-2 py-10 text-xs font-semibold text-[var(--color-slate)]">
+        <Plumbob size={16} />
         {EVENT_DATE_SHORT}
       </footer>
     </main>

@@ -1,43 +1,58 @@
 "use client";
 
-import { Label, Nebulosa } from "@/components/ui";
+import { Label, Nebulosa, Plumbob } from "@/components/ui";
 import { HERO_LABEL, PERSON_NAME } from "@/data/config";
 
 export default function Hero() {
   return (
-    <section className="relative text-center py-20 md:py-28 px-6 animate-fade-in overflow-hidden">
-      <Nebulosa color="rosa" position="top-right" size="lg" />
-      <Nebulosa color="azul" position="bottom-left" size="lg" />
+    <section className="relative text-center py-20 md:py-28 px-6 animate-fade-in overflow-hidden iso-grid">
+      <Nebulosa color="cyan" position="top-right" size="lg" />
+      <Nebulosa color="plumbob" position="bottom-left" size="lg" />
 
-      <Label className="mb-6">{HERO_LABEL}</Label>
+      {/* El plumbob flotando arriba del wordmark, como en la caja del juego */}
+      <div className="relative flex justify-center mb-3">
+        <Plumbob size={72} animation="spin" className="animate-plumbob-pulse" />
+      </div>
 
-      <h1 className="leading-none mb-8">
-        <span
-          className="block text-[48px] md:text-[56px] text-[#D94F8A]"
-          style={{ fontFamily: "var(--font-dancing)" }}
-        >
-          {PERSON_NAME} pide,
+      {/* Titulo tratado como el logo: la linea chica arriba y el nombre grande
+          abajo, igual que "The" sobre "SiMs". */}
+      <h1 className="mb-6">
+        <span className="sims-title sims-title-sm block text-[26px] md:text-[36px]">
+          Un regalito para
         </span>
-        <span
-          className="block text-[56px] md:text-[72px] font-semibold text-[#1A1A1A] mt-1"
-          style={{ fontFamily: "var(--font-playfair)" }}
-        >
-          nosotros cumplimos
+        <span className="sims-title block text-[64px] md:text-[104px] -mt-1">
+          {PERSON_NAME}
         </span>
       </h1>
 
-      <p className="text-lg md:text-xl max-w-md mx-auto leading-relaxed text-[#8A7E72]">
+      <Label className="mb-5">{HERO_LABEL}</Label>
+
+      <p
+        className="text-xl md:text-2xl font-semibold text-[var(--color-cyan-deep)] mb-5"
+        style={{ fontFamily: "var(--font-fredoka)" }}
+      >
+        {PERSON_NAME} pide, nosotros cumplimos
+      </p>
+
+      <p className="text-lg md:text-xl max-w-md mx-auto leading-relaxed text-[var(--color-slate)]">
         Ella eligió sus regalos, nosotros nos encargamos de juntarlos.
         <br />
         Sumá tu aporte, dejale un mensaje y ayudanos a completar su lista de regalos.
       </p>
 
       <button
-        onClick={() => document.getElementById("contribuir")?.scrollIntoView({ behavior: "smooth" })}
-        className="mt-10 inline-block px-8 py-3 rounded-full text-white text-sm font-medium tracking-wide transition-opacity hover:opacity-90"
-        style={{ background: "linear-gradient(90deg, #6B8CCE, #9B6CB8, #D94F8A)", fontFamily: "var(--font-dm)" }}
+        onClick={() =>
+          document
+            .getElementById("contribuir")
+            ?.scrollIntoView({ behavior: "smooth" })
+        }
+        className="sims-button mt-10 inline-flex items-center gap-2 px-9 py-3.5 text-white text-base font-semibold tracking-wide bg-[image:var(--gradient-cta-green)]"
+        style={{ fontFamily: "var(--font-fredoka)" }}
       >
-        Quiero participar
+        <span className="relative z-10 flex items-center gap-2">
+          <Plumbob size={20} />
+          Quiero participar
+        </span>
       </button>
     </section>
   );

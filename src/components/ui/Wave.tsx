@@ -6,7 +6,7 @@ interface WaveProps {
 
 export default function Wave({
   flip = false,
-  color = "#F0ECE6",
+  color = "var(--color-sky-deep)",
   className = "",
 }: WaveProps) {
   return (

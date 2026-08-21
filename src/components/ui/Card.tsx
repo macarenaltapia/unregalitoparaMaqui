@@ -1,6 +1,7 @@
 import { HTMLAttributes } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  /** default = panel de vidrio | glass = panel con borde degrade plumbob→cyan */
   variant?: "default" | "glass";
   padding?: "sm" | "md" | "lg";
 }
@@ -18,16 +19,17 @@ export default function Card({
   children,
   ...props
 }: CardProps) {
-  const base = `rounded-[var(--radius-card)] ${paddings[padding]}`;
-
   const variantClass =
     variant === "glass"
-      ? "bg-[var(--glass-bg)] backdrop-blur-[16px] border-[1.5px] border-transparent glass-border"
-      : "bg-white border border-[var(--color-border)]";
+      ? "panel-border rounded-[var(--radius-glass)]"
+      : "sims-panel";
 
   return (
-    <div className={`${base} ${variantClass} ${className}`} {...props}>
-      {children}
+    <div
+      className={`${variantClass} ${paddings[padding]} ${className}`}
+      {...props}
+    >
+      <div className="relative z-10">{children}</div>
     </div>
   );
 }

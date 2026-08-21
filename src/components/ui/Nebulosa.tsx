@@ -1,13 +1,13 @@
 interface NebulosaProps {
-  color: "rosa" | "azul";
+  color: "plumbob" | "cyan";
   position: "top-left" | "top-right" | "bottom-left" | "bottom-right" | "center";
   size?: "sm" | "md" | "lg";
   className?: string;
 }
 
 const colorMap = {
-  rosa: "var(--color-rosa)",
-  azul: "var(--color-azul)",
+  plumbob: "var(--color-plumbob)",
+  cyan: "var(--color-cyan)",
 };
 
 const positionMap = {
@@ -35,8 +35,8 @@ export default function Nebulosa({
       className={`absolute rounded-full pointer-events-none ${positionMap[position]} ${sizeMap[size]} ${className}`}
       style={{
         background: colorMap[color],
-        filter: "blur(60px)",
-        opacity: 0.18,
+        filter: "blur(70px)",
+        opacity: 0.22,
       }}
       aria-hidden="true"
     />

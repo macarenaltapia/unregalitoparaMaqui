@@ -9,3 +9,4 @@ export { default as Badge } from "./Badge";
 export { default as Nebulosa } from "./Nebulosa";
 export { default as Section } from "./Section";
 export { default as Wave } from "./Wave";
+export { default as Plumbob } from "./Plumbob";
