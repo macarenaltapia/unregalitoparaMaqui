@@ -5,34 +5,47 @@ import { AvatarArt, Gift } from "@/types";
 // Las imagenes van en public/gifts/ (cuadradas, se recortan a aspect-square).
 //
 // El campo `avatar` conecta el regalo con la habitacion: `wearable` se le pone
-// encima al avatar, `prop` aparece sobre la comoda. Un regalo sin `avatar`
+// encima al avatar, `prop` aparece sobre la mesa de luz. Un regalo sin `avatar`
 // funciona igual, solo que no cambia nada en la escena.
+//
+// El avatar arranca en remera blanca de manga corta, bermuda de jean y medias,
+// justamente para que se note cada prenda que se le suma.
 export const gifts: Gift[] = [
-  {
-    id: "perfume",
-    name: "Perfume",
-    price: 50000,
-    image: "/gifts/placeholder.svg",
-    link: "https://example.com",
-    emoji: "🌸",
-    avatar: { kind: "prop", art: "perfume" },
-  },
   {
     id: "campera-cuero",
     name: "Campera de cuero",
-    price: 80000,
-    image: "/gifts/placeholder.svg",
-    link: "https://example.com",
+    price: 166000,
+    image: "/gifts/campera-cuero.jpg",
+    link: "https://www.zara.com/ar/es/cazadora-efecto-piel-bolsillos-p04749970.html?v1=557058426&v2=2510426",
     emoji: "🧥",
     avatar: { kind: "wearable", art: "campera-cuero" },
   },
   {
-    id: "regalo-3",
-    name: "Tercer regalo",
-    price: 120000,
-    image: "/gifts/placeholder.svg",
-    link: "https://example.com",
-    emoji: "🎁",
+    id: "pantalon-adidas",
+    name: "Pantalon Adidas",
+    price: 150000,
+    image: "/gifts/pantalon-adidas.jpg",
+    link: "https://www.moov.com.ar/pantalon-adidas-firebird-holgado-mujer/ADKD7976.html",
+    emoji: "👖",
+    avatar: { kind: "wearable", art: "pantalon-adidas" },
+  },
+  {
+    id: "mocasines",
+    name: "Mocasines",
+    price: 170000,
+    image: "/gifts/mocasines.png",
+    link: "https://www.cletas.ar/productos/mocasin-emily-unisex/",
+    emoji: "👞",
+    avatar: { kind: "wearable", art: "mocasines" },
+  },
+  {
+    id: "arqueador",
+    name: "Arqueador de pestanas",
+    price: 85000,
+    image: "/gifts/arqueador.png",
+    link: "https://www.mercadolibre.com.ar/encrespador-de-pestanas-shiseido-eyelash-curler-plateado/p/MLA28278590",
+    emoji: "💄",
+    avatar: { kind: "prop", art: "arqueador" },
   },
 ];
 

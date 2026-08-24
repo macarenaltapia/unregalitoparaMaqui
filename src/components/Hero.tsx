@@ -20,7 +20,10 @@ export default function Hero() {
         <span className="sims-title sims-title-sm block text-[26px] md:text-[36px]">
           Un regalito para
         </span>
-        <span className="sims-title block text-[64px] md:text-[104px] -mt-1">
+        <span
+          className="sims-title sims-title-green block text-[64px] md:text-[104px] -mt-1"
+          data-text={PERSON_NAME}
+        >
           {PERSON_NAME}
         </span>
       </h1>

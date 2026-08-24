@@ -1,109 +1,55 @@
 import { AvatarArt } from "@/types";
 
 /**
- * Dibujos de los regalos, en pixel art.
+ * Los regalos que se apoyan sobre un mueble.
  *
- * - `wearables`: se superponen al avatar usando SU MISMA grilla de 16x32, asi
- *   que las filas coinciden una a una con las del sprite base. La fila 15 son
- *   los hombros, la 24 la cadera.
- * - `props`: sprites sueltos que se apoyan sobre la comoda. Cada uno declara
- *   su propio tamaño en pixeles.
- *
- * Para sumar un regalo: agregar el id en `AvatarArt` (src/types), dibujarlo
- * aca y referenciarlo desde src/data/gifts.ts.
+ * Cada uno se dibuja con el origen en su base, asi para ubicarlo alcanza con
+ * darle el punto de apoyo sobre la tapa del mueble. Van en la misma proyeccion
+ * que el resto de la escena: se estiran hacia +b, o sea (+2,+1) en pantalla.
  */
 
-export interface PixelPiece {
-  map: string[];
-  palette: Record<string, string>;
-  /** Ancho en pixeles, para poder centrar los props. */
-  cols: number;
+export interface PropPlacement {
+  x: number;
+  y: number;
 }
 
-/* ============================================
-   WEARABLES — grilla de 16x32, la del avatar
-   ============================================ */
+function Arqueador({ x, y }: PropPlacement) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <defs>
+        <linearGradient id="aqMetal" x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0%" stopColor="#9AA0A8" />
+          <stop offset="45%" stopColor="#5A6068" />
+          <stop offset="100%" stopColor="#2B2F35" />
+        </linearGradient>
+      </defs>
 
-/**
- * Campera de cuero: hombros, mangas largas y el frente abierto dejando ver
- * la remera blanca por el medio (columnas 7 y 8 quedan transparentes).
- */
-const camperaCuero: PixelPiece = {
-  cols: 16,
-  palette: {
-    L: "#3E2C23", // cuero
-    l: "#241A15", // cuero en sombra
-    k: "#6B4E3D", // brillo del cuero
-    Z: "#C8A87C", // cierre
-  },
-  map: [
-    "................", //  0
-    "................", //  1
-    "................", //  2
-    "................", //  3
-    "................", //  4
-    "................", //  5
-    "................", //  6
-    "................", //  7
-    "................", //  8
-    "................", //  9
-    "................", // 10
-    "................", // 11
-    "................", // 12
-    "................", // 13
-    "................", // 14
-    "....kkkkkkkk....", // 15  cuello de la campera
-    "...LLLkZZkLLL...", // 16  solapas y cierre
-    ".LLLLLkZZkLLLLL.", // 17  nacen las mangas
-    ".LLLLLLZZLLLLLL.", // 18
-    ".LL..LLZZLL..LL.", // 19  se separan mangas y cuerpo
-    ".LL..LLZZLL..LL.", // 20
-    ".LL..LLZZLL..LL.", // 21
-    ".LL..LLZZLL..LL.", // 22
-    ".ll..llllll..ll.", // 23  puños y ruedo
-    "................", // 24
-    "................", // 25
-    "................", // 26
-    "................", // 27
-    "................", // 28
-    "................", // 29
-    "................", // 30
-    "................", // 31
-  ],
-};
+      {/* Sombra sobre la tapa del mueble */}
+      <ellipse cx="1" cy="-0.3" rx="5.4" ry="2.2" fill="#3A2A18" opacity="0.24" />
 
-export const wearables: Partial<Record<AvatarArt, PixelPiece>> = {
-  "campera-cuero": camperaCuero,
-};
+      {/* Apoyado de costado, como queda de verdad en una mesa de luz.
+          Aros del mango */}
+      <ellipse cx="-2.6" cy="-1.9" rx="2.1" ry="1.5" fill="none" stroke="url(#aqMetal)" strokeWidth="1.1" />
+      <ellipse cx="-0.4" cy="-3" rx="2.1" ry="1.5" fill="none" stroke="url(#aqMetal)" strokeWidth="1.1" />
 
-/* ============================================
-   PROPS — se apoyan sobre la comoda
-   ============================================ */
+      {/* Brazos hacia la cabeza */}
+      <path d="M -1,-2.2 L 4.2,-4.6" stroke="url(#aqMetal)" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M 1.2,-3.3 L 4.6,-5" stroke="url(#aqMetal)" strokeWidth="1.1" strokeLinecap="round" />
 
-const perfume: PixelPiece = {
-  cols: 7,
-  palette: {
-    G: "#D9A441", // tapa dorada
-    g: "#F0CE93", // brillo de la tapa
-    N: "#E4C08A", // cuello
-    P: "#F0A8C6", // vidrio rosa
-    p: "#DE7FA8", // liquido
-    o: "#FFFFFF", // reflejo
-  },
-  map: [
-    "..ggg..",
-    "..GGG..",
-    "...N...",
-    ".PPPPP.",
-    "PoPPPPP",
-    "PoPPPPP",
-    "PppppPP",
-    "PppppPP",
-    "PppppPP",
-    ".PPPPP.",
-  ],
-};
+      {/* Cabeza curvadora */}
+      <path
+        d="M 3.6,-3.8 Q 6.2,-5.6 7.4,-4.4 Q 6.4,-2.8 4.2,-2.6 Z"
+        fill="url(#aqMetal)"
+      />
+      {/* Almohadilla de goma */}
+      <path d="M 4.4,-4.4 Q 6,-5.4 6.8,-4.6" fill="none" stroke="#E8A0B4" strokeWidth="0.9" strokeLinecap="round" />
+    </g>
+  );
+}
 
-export const props: Partial<Record<AvatarArt, PixelPiece>> = {
-  perfume,
+/** Los regalos que van apoyados en un mueble, por id de arte. */
+export const roomProps: Partial<
+  Record<AvatarArt, (p: PropPlacement) => React.JSX.Element>
+> = {
+  arqueador: Arqueador,
 };

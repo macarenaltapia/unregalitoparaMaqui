@@ -2,7 +2,11 @@
  * Piezas que sabe dibujar la habitacion. Para sumar un regalo nuevo al avatar
  * hay que agregar el id aca y su dibujo en src/components/room/art.tsx.
  */
-export type AvatarArt = "campera-cuero" | "perfume";
+export type AvatarArt =
+  | "campera-cuero"
+  | "pantalon-adidas"
+  | "mocasines"
+  | "arqueador";
 
 export interface GiftAvatar {
   /** wearable = se le pone al avatar | prop = aparece en la comoda */

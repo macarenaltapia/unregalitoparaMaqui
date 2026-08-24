@@ -30,6 +30,7 @@
   --gradient-panel: linear-gradient(135deg, #16B6E8, #2FD44A, #8FE3FB);
   --gradient-cta: linear-gradient(180deg, #35C9F2 0%, #16B6E8 50%, #0B7FB4 100%);
   --gradient-cta-green: linear-gradient(180deg, #56E86E 0%, #2FD44A 50%, #12A33A 100%);
+  --gradient-sims-green: linear-gradient(180deg, #E4F79B 0%, #A5E356 30%, #4FC244 64%, #17913A 100%);
   --gradient-sky: linear-gradient(180deg, #F4FBFF 0%, #E4F4FD 55%, #D3EDFA 100%);
 
   /* Tipografia */
@@ -98,6 +99,33 @@
   text-shadow:
     0 0.04em 0 rgba(8, 34, 78, 0.5),
     0 0.08em 0.2em rgba(10, 42, 64, 0.32);
+}
+
+/* Relleno verde degradado, como el "2" del logo de The Sims 2.
+   Va en dos capas porque `color` no acepta degradados: el elemento dibuja el
+   contorno azul con el relleno transparente, y el ::after pinta el degradado
+   encima recortado a la forma de las letras. Asi el ::after tapa la mitad
+   interna del trazo y las letras conservan su grosor, igual que hace
+   `paint-order: stroke fill` en el titulo blanco. */
+.sims-title-green {
+  position: relative;
+  color: transparent;
+}
+
+.sims-title-green::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Sin trazo ni sombra: de eso ya se encarga la capa de abajo. */
+  -webkit-text-stroke-width: 0;
+  text-shadow: none;
+  background: var(--gradient-sims-green);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  pointer-events: none;
 }
 
 /* ============================================
@@ -391,5 +419,39 @@ body {
   .animate-pulse-soft,
   .room-item {
     animation: none;
+  }
+}
+
+/* ============================================
+   PERCHERO — aureola de las prendas clickeables
+   ============================================ */
+
+@keyframes rackGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.12); }
+}
+
+.rack-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rackGlow 1.9s ease-in-out infinite;
+}
+
+/* Toda la prenda colgada es el area clickeable */
+.rack-item {
+  cursor: pointer;
+  outline: none;
+}
+
+.rack-item:hover .rack-glow,
+.rack-item:focus-visible .rack-glow {
+  opacity: 1;
+  animation-duration: 1.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rack-glow {
+    animation: none;
+    opacity: 0.75;
   }
 }
