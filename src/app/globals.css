@@ -239,6 +239,30 @@ body {
    NEED BAR — barra de necesidades (segmentada)
    ============================================ */
 
+/* Cartelito de aporte confirmado. Baja desde arriba de la pantalla porque
+   al confirmar mandamos al usuario a la habitacion y la barra, y el
+   formulario le queda fuera de vista. */
+.sims-toast {
+  animation: toastIn 0.42s cubic-bezier(0.2, 1.3, 0.5, 1) both;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sims-toast {
+    animation: none;
+  }
+}
+
 .need-bar {
   position: relative;
   border: 2px solid rgba(255, 255, 255, 0.9);

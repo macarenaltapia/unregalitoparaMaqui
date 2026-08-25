@@ -36,7 +36,10 @@ export default function ProgressBar({ total }: ProgressBarProps) {
   const next = milestones.find((m) => !m.isUnlocked);
 
   return (
-    <section className="px-6 py-12 max-w-2xl mx-auto w-full animate-fade-in-up">
+    <section
+      id="progreso"
+      className="px-6 py-12 max-w-2xl mx-auto w-full animate-fade-in-up"
+    >
       {/* La habitacion, fija arriba de la barra */}
       <div className="mb-8">
         <SimsRoom unlocked={getUnlockedArt(total)} />
