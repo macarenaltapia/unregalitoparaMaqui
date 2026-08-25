@@ -12,24 +12,6 @@ import { AvatarArt, Gift } from "@/types";
 // justamente para que se note cada prenda que se le suma.
 export const gifts: Gift[] = [
   {
-    id: "campera-cuero",
-    name: "Campera de cuero",
-    price: 166000,
-    image: "/gifts/campera-cuero.jpg",
-    link: "https://www.zara.com/ar/es/cazadora-efecto-piel-bolsillos-p04749970.html?v1=557058426&v2=2510426",
-    emoji: "🧥",
-    avatar: { kind: "wearable", art: "campera-cuero" },
-  },
-  {
-    id: "pantalon-adidas",
-    name: "Pantalon Adidas",
-    price: 150000,
-    image: "/gifts/pantalon-adidas.jpg",
-    link: "https://www.moov.com.ar/pantalon-adidas-firebird-holgado-mujer/ADKD7976.html",
-    emoji: "👖",
-    avatar: { kind: "wearable", art: "pantalon-adidas" },
-  },
-  {
     id: "mocasines",
     name: "Mocasines",
     price: 170000,
@@ -39,8 +21,26 @@ export const gifts: Gift[] = [
     avatar: { kind: "wearable", art: "mocasines" },
   },
   {
+    id: "pantalon-adidas",
+    name: "Pantalón Adidas",
+    price: 150000,
+    image: "/gifts/pantalon-adidas.jpg",
+    link: "https://www.moov.com.ar/pantalon-adidas-firebird-holgado-mujer/ADKD7976.html",
+    emoji: "👖",
+    avatar: { kind: "wearable", art: "pantalon-adidas" },
+  },
+  {
+    id: "campera-cuero",
+    name: "Campera de cuero",
+    price: 166000,
+    image: "/gifts/campera-cuero.jpg",
+    link: "https://www.zara.com/ar/es/cazadora-efecto-piel-bolsillos-p04749970.html?v1=557058426&v2=2510426",
+    emoji: "🧥",
+    avatar: { kind: "wearable", art: "campera-cuero" },
+  },
+  {
     id: "arqueador",
-    name: "Arqueador de pestanas",
+    name: "Arqueador",
     price: 85000,
     image: "/gifts/arqueador.png",
     link: "https://www.mercadolibre.com.ar/encrespador-de-pestanas-shiseido-eyelash-curler-plateado/p/MLA28278590",

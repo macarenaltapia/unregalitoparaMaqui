@@ -34,13 +34,14 @@ export default function Hero() {
         className="text-xl md:text-2xl font-semibold text-[var(--color-cyan-deep)] mb-5"
         style={{ fontFamily: "var(--font-fredoka)" }}
       >
-        {PERSON_NAME} pide, nosotros cumplimos
+        {PERSON_NAME} tiene deseos. Vos tenés simoleones.
       </p>
 
       <p className="text-lg md:text-xl max-w-md mx-auto leading-relaxed text-[var(--color-slate)]">
-        Ella eligió sus regalos, nosotros nos encargamos de juntarlos.
+        Ella ya dejó su lista armada en el Modo Compra.
         <br />
-        Sumá tu aporte, dejale un mensaje y ayudanos a completar su lista de regalos.
+        Sumá tu aporte, dejale un mensaje y mirá cómo van apareciendo los
+        regalos, uno por uno.
       </p>
 
       <button

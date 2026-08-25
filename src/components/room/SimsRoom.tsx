@@ -545,33 +545,33 @@ export default function SimsRoom({ unlocked }: SimsRoomProps) {
           <g className="animate-plumbob-float">
             <polygon
               points={points(
-                { x: STAND.x, y: STAND.y - 88 },
-                { x: STAND.x - 7, y: STAND.y - 76 },
-                { x: STAND.x, y: STAND.y - 76 },
+                { x: STAND.x, y: STAND.y - 104 },
+                { x: STAND.x - 7, y: STAND.y - 92 },
+                { x: STAND.x, y: STAND.y - 92 },
               )}
               fill="#9BF7A4"
             />
             <polygon
               points={points(
-                { x: STAND.x, y: STAND.y - 88 },
-                { x: STAND.x + 7, y: STAND.y - 76 },
-                { x: STAND.x, y: STAND.y - 76 },
+                { x: STAND.x, y: STAND.y - 104 },
+                { x: STAND.x + 7, y: STAND.y - 92 },
+                { x: STAND.x, y: STAND.y - 92 },
               )}
               fill="#3FE057"
             />
             <polygon
               points={points(
-                { x: STAND.x - 7, y: STAND.y - 76 },
-                { x: STAND.x, y: STAND.y - 64 },
-                { x: STAND.x, y: STAND.y - 76 },
+                { x: STAND.x - 7, y: STAND.y - 92 },
+                { x: STAND.x, y: STAND.y - 80 },
+                { x: STAND.x, y: STAND.y - 92 },
               )}
               fill="#2FD44A"
             />
             <polygon
               points={points(
-                { x: STAND.x + 7, y: STAND.y - 76 },
-                { x: STAND.x, y: STAND.y - 64 },
-                { x: STAND.x, y: STAND.y - 76 },
+                { x: STAND.x + 7, y: STAND.y - 92 },
+                { x: STAND.x, y: STAND.y - 80 },
+                { x: STAND.x, y: STAND.y - 92 },
               )}
               fill="#12A33A"
             />

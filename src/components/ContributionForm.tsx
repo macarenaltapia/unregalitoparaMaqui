@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button, Input, Textarea, SectionTitle, Section } from "@/components/ui";
 import PaymentInfo from "./PaymentInfo";
-import { PERSON_NAME } from "@/data/config";
+import { DEADLINE_LONG, PERSON_NAME } from "@/data/config";
 
 interface ContributionFormProps {
   onSuccess: () => void;
@@ -69,6 +69,13 @@ export default function ContributionForm({
   return (
     <Section maxWidth="form" id="contribuir">
       <SectionTitle>Como participo?</SectionTitle>
+
+      {/* La fecha de cierre va antes que los pasos: es lo que apura */}
+      <p className="mb-7 flex items-center justify-center gap-2 rounded-[var(--radius-input)] border-2 border-[var(--color-border)] bg-white/70 px-4 py-3 text-center text-sm font-semibold text-[var(--color-navy)]">
+        <span aria-hidden="true">⏳</span>
+        Tenés tiempo hasta el {DEADLINE_LONG}. Ahí cerramos la partida y
+        salimos a comprar.
+      </p>
 
       {/* Los pasos, numerados como una lista de tareas del juego */}
       <ol className="mb-8 space-y-3">

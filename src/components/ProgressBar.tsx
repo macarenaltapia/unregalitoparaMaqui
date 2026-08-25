@@ -1,5 +1,7 @@
 "use client";
 
+import { Fragment } from "react";
+
 import {
   gifts,
   getTotalGoal,
@@ -28,6 +30,10 @@ export default function ProgressBar({ total }: ProgressBarProps) {
       isUnlocked: unlocked.includes(gift.id),
     };
   });
+
+  // El proximo regalo por desbloquear: se marca rayado sobre la barra y
+  // abajo se dice cuanto falta. Si ya estan todos, next queda undefined.
+  const next = milestones.find((m) => !m.isUnlocked);
 
   return (
     <section className="px-6 py-12 max-w-2xl mx-auto w-full animate-fade-in-up">
@@ -63,46 +69,105 @@ export default function ProgressBar({ total }: ProgressBarProps) {
           />
         </div>
 
-        <div className="flex justify-between mt-7">
-          {milestones.map((milestone) => (
-            <div
-              key={milestone.id}
-              className="flex flex-col items-center text-center transition-all duration-500"
-              style={{
-                opacity: milestone.isUnlocked ? 1 : 0.5,
-                transform: milestone.isUnlocked ? "scale(1)" : "scale(0.9)",
-              }}
-            >
-              <Plumbob
-                size={26}
-                dimmed={!milestone.isUnlocked}
-                animation={milestone.isUnlocked ? "float" : "none"}
-              />
-              <span
-                className="text-xl mt-1"
-                style={{
-                  filter: milestone.isUnlocked ? "none" : "grayscale(1)",
-                }}
-              >
-                {milestone.emoji}
-              </span>
-              <span
-                className="text-xs font-bold mt-0.5"
-                style={{
-                  fontFamily: "var(--font-fredoka)",
-                  color: milestone.isUnlocked
-                    ? "var(--color-plumbob-deep)"
-                    : "var(--color-slate)",
-                }}
-              >
-                {formatPrice(milestone.price)}
-              </span>
-              <span className="text-[var(--size-metadata)] mt-0.5 text-[var(--color-slate)]">
-                {milestone.name}
-              </span>
-            </div>
-          ))}
+        {/* Cada regalo cae sobre la barra en la posicion de su umbral acumulado,
+            para que se vea cuanta barra falta para llegar a cada uno.
+
+            Dos detalles que hacen falta si o si:
+            - Van alternados en dos alturas. Los ultimos dos hitos quedan a 15%
+              de distancia y los nombres se pisarian, sobre todo en celular.
+            - El ultimo cae en el 100%, o sea justo en el borde. Centrar ahi la
+              etiqueta la deja media afuera, asi que segun donde caiga se ancla
+              por la izquierda, por el centro o por la derecha, y la guia va
+              siempre pegada a ese mismo borde. */}
+        <div className="relative mt-1 h-[236px] [--hito-w:88px] sm:h-[212px] sm:[--hito-w:128px]">
+          {milestones.map((milestone, i) => {
+            const isNext = next?.id === milestone.id;
+            const bajo = i % 2 === 1;
+            const guia = bajo ? 122 : 12;
+
+            // 0 = pegada a la izquierda, 0.5 = centrada, 1 = a la derecha
+            const ancla =
+              milestone.position <= 8 ? 0 : milestone.position >= 92 ? 1 : 0.5;
+
+            return (
+              <Fragment key={milestone.id}>
+                <span
+                  className="absolute top-0 w-px"
+                  style={{
+                    left: `calc(${milestone.position}% - ${ancla}px)`,
+                    height: guia,
+                    background: milestone.isUnlocked
+                      ? "var(--color-plumbob)"
+                      : "var(--color-border)",
+                  }}
+                  aria-hidden="true"
+                />
+
+                <div
+                  className={`absolute flex w-[var(--hito-w)] flex-col transition-all duration-500 ${
+                    ancla === 0
+                      ? "items-start text-left"
+                      : ancla === 1
+                        ? "items-end text-right"
+                        : "items-center text-center"
+                  }`}
+                  style={{
+                    top: guia,
+                    left: `calc(${milestone.position}% - ${ancla} * var(--hito-w))`,
+                    opacity: milestone.isUnlocked ? 1 : isNext ? 0.9 : 0.45,
+                    transform:
+                      milestone.isUnlocked || isNext ? "scale(1)" : "scale(0.9)",
+                    transformOrigin: `${ancla * 100}% 0`,
+                  }}
+                >
+                  <Plumbob
+                    size={26}
+                    dimmed={!milestone.isUnlocked}
+                    animation={milestone.isUnlocked ? "float" : "none"}
+                  />
+                  <span
+                    className="text-xl mt-1"
+                    style={{
+                      filter: milestone.isUnlocked ? "none" : "grayscale(1)",
+                    }}
+                  >
+                    {milestone.emoji}
+                  </span>
+                  <span
+                    className="text-xs font-bold mt-0.5"
+                    style={{
+                      fontFamily: "var(--font-fredoka)",
+                      color: milestone.isUnlocked
+                        ? "var(--color-plumbob-deep)"
+                        : isNext
+                          ? "var(--color-navy)"
+                          : "var(--color-slate)",
+                    }}
+                  >
+                    {formatPrice(milestone.price)}
+                  </span>
+                  <span className="text-[var(--size-metadata)] mt-0.5 leading-tight text-[var(--color-slate)]">
+                    {milestone.name}
+                  </span>
+                </div>
+              </Fragment>
+            );
+          })}
         </div>
+
+        {next ? (
+          <p className="mt-7 text-center text-sm font-semibold text-[var(--color-navy)]">
+            Faltan{" "}
+            <span className="text-[var(--color-plumbob-deep)]">
+              {formatPrice(next.threshold - total)}
+            </span>{" "}
+            para desbloquear {next.emoji} {next.name}
+          </p>
+        ) : (
+          <p className="mt-7 text-center text-sm font-semibold text-[var(--color-plumbob-deep)]">
+            Se desbloquearon todos los regalos 🎉
+          </p>
+        )}
       </div>
     </section>
   );
