@@ -126,10 +126,38 @@ const STRIPE = "#EFF2F5";
 const LOAFER_S = "#08080A";
 const LOAFER_HI = "#33333B";
 
+const SATIN_S = "#C4CEDB";
+const DRESS_S = "#08080B";
+const BUCKLE = "#C9A227";
+
+/** Que tiene puesto en el brazo. La campera le gana a todo lo demas. */
+type Sleeve = "tee" | "shirt" | "jacket" | "bare";
+
+/** Los cierres de la camisa, bajando por el frente del torso. */
+const ALAMARES: [number, number][] = [
+  [0.6, -41],
+  [0.3, -37],
+  [0, -33],
+  [-0.3, -29],
+  [-0.6, -25],
+];
+
 export default function Avatar({ unlocked, x, y, scale = 1 }: AvatarProps) {
   const jacket = unlocked.includes("campera-cuero");
-  const pants = unlocked.includes("pantalon-adidas");
+  const dress = unlocked.includes("vestido-negro");
+  // El vestido es de una pieza: mientras lo tenga puesto, la camisa y el
+  // pantalon no se dibujan aunque esten desbloqueados.
+  const shirt = unlocked.includes("camisa-blanca") && !dress;
+  const pants = unlocked.includes("pantalon-adidas") && !dress;
   const loafers = unlocked.includes("mocasines");
+
+  const sleeve: Sleeve = jacket
+    ? "jacket"
+    : dress
+      ? "bare"
+      : shirt
+        ? "shirt"
+        : "tee";
 
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`}>
@@ -184,6 +212,20 @@ export default function Avatar({ unlocked, x, y, scale = 1 }: AvatarProps) {
           <stop offset="55%" stopColor="#26272D" />
           <stop offset="100%" stopColor="#3B3D45" />
         </linearGradient>
+        {/* El satin se lee por el contraste del degradado: blanco quemado en
+            el medio y sombra fria en los bordes. */}
+        <linearGradient id="avSatin" x1="0" y1="0.05" x2="1" y2="0.4">
+          <stop offset="0%" stopColor={SATIN_S} />
+          <stop offset="38%" stopColor="#FFFFFF" />
+          <stop offset="66%" stopColor="#EFF3F8" />
+          <stop offset="100%" stopColor="#D2DAE4" />
+        </linearGradient>
+        <linearGradient id="avDress" x1="0" y1="0.05" x2="1" y2="0.4">
+          <stop offset="0%" stopColor="#0A0A0D" />
+          <stop offset="45%" stopColor="#1E1E24" />
+          <stop offset="80%" stopColor="#3A3A43" />
+          <stop offset="100%" stopColor="#26262C" />
+        </linearGradient>
         <linearGradient id="avLoafer" x1="0" y1="0" x2="0.9" y2="0.5">
           <stop offset="0%" stopColor="#0B0B0D" />
           <stop offset="55%" stopColor="#212126" />
@@ -210,11 +252,11 @@ export default function Avatar({ unlocked, x, y, scale = 1 }: AvatarProps) {
       />
 
       {/* ---------- Brazo izquierdo (lejano, detras del torso) ---------- */}
-      <Arm sho={L_SHO} elb={L_ELB} wri={L_WRI} jacket={jacket} far />
+      <Arm sho={L_SHO} elb={L_ELB} wri={L_WRI} sleeve={sleeve} far />
 
       {/* ---------- Piernas ---------- */}
-      <Leg hip={L_HIP} knee={L_KNEE} ankle={L_ANKLE} pants={pants} loafers={loafers} far />
-      <Leg hip={R_HIP} knee={R_KNEE} ankle={R_ANKLE} pants={pants} loafers={loafers} />
+      <Leg hip={L_HIP} knee={L_KNEE} ankle={L_ANKLE} pants={pants} dress={dress} loafers={loafers} far />
+      <Leg hip={R_HIP} knee={R_KNEE} ankle={R_ANKLE} pants={pants} dress={dress} loafers={loafers} />
 
       {/* ---------- Pies ---------- */}
       <Foot at={L_FOOT} loafers={loafers} far />
@@ -229,21 +271,91 @@ export default function Avatar({ unlocked, x, y, scale = 1 }: AvatarProps) {
         fill={SKIN_S}
       />
 
-      {/* ---------- Torso, con la remera blanca ---------- */}
-      <path d={TORSO} fill="url(#avTee)" />
-      {/* Pliegue del costado, para que el blanco no quede una mancha plana */}
+      {/* ---------- Torso ----------
+           Mismo contorno siempre; lo que cambia es la tela y lo que se le
+           dibuja encima. Sin prenda nueva es la remera blanca de arranque. */}
+      <path
+        d={TORSO}
+        fill={dress ? "url(#avDress)" : shirt ? "url(#avSatin)" : "url(#avTee)"}
+        className={dress || shirt ? "room-item" : undefined}
+      />
+      {/* Pliegue del costado, para que la tela no quede una mancha plana */}
       <path
         d="M -6.6,-35.4 C -5.4,-30 -5,-23.4 -5.2,-16.2
            C -6,-19 -6.4,-25.6 -6.6,-35.4 Z"
-        fill={TEE_S}
+        fill={dress ? DRESS_S : shirt ? SATIN_S : TEE_S}
         opacity="0.75"
       />
-      {/* Escote */}
+      {/* Escote. Con el vestido queda al aire, asi se lee que no tiene mangas */}
       <path
         d="M -1.8,-45.2 C 0.4,-43.2 3.4,-43.4 5.2,-45.6
            C 4.4,-42.6 0.6,-41.6 -1.8,-45.2 Z"
-        fill={TEE_S}
+        fill={dress ? SKIN_MID : shirt ? SATIN_S : TEE_S}
       />
+
+      {/* ---------- El vestido negro: pollera y cinturon ---------- */}
+      {dress && (
+        <g className="room-item">
+          {/* La pollera se abre desde la cintura y cae hasta la rodilla. El
+              ruedo baja hacia su derecha, que es el lado cerca de la camara. */}
+          <path
+            d="M -6.5,-20.4
+               C -7.8,-17 -9,-13.6 -9.6,-10.4
+               C -8.8,-8.4 -5.4,-7.2 -1,-7.4
+               C 3,-7.6 6.4,-9.2 7.4,-11.4
+               C 7.2,-15 7,-17.6 6.4,-20.4
+               C 3,-18.8 -3,-18.8 -6.5,-20.4 Z"
+            fill="url(#avDress)"
+          />
+          {/* Dos caidas de tela, para que el negro no sea una silueta plana */}
+          <path
+            d="M -3.6,-19.4 C -4.8,-15.6 -6,-12.2 -6.8,-9.6"
+            fill="none"
+            stroke={DRESS_S}
+            strokeWidth="0.5"
+            strokeLinecap="round"
+            opacity="0.8"
+          />
+          <path
+            d="M 3.4,-19.4 C 4,-16 4.6,-13 5,-10.8"
+            fill="none"
+            stroke="#4A4A54"
+            strokeWidth="0.5"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
+          {/* El cinturon, que es lo que define este vestido */}
+          <path
+            d="M -6.55,-22.6 C -3,-20.8 3,-20.8 6.45,-22.6
+               L 6.3,-19.4 C 3,-17.6 -3,-17.6 -6.45,-19.4 Z"
+            fill={DRESS_S}
+          />
+          <rect x="-1" y="-21.6" width="2" height="2" rx="0.4" fill={BUCKLE} />
+        </g>
+      )}
+
+      {/* ---------- La camisa blanca: cuello y alamares ---------- */}
+      {shirt && (
+        <g className="room-item">
+          {/* Cuello camisero: dos puntas abiertas sobre el escote */}
+          <path d="M -2.2,-45.6 L 1.2,-42.2 L -3.6,-42.8 Z" fill="#D3DBE4" />
+          <path d="M 5.6,-46 L 2.2,-42.6 L 6.9,-43.2 Z" fill="#C4CEDA" />
+          {/* Alamares: los cordones cruzados que cierran el frente */}
+          {ALAMARES.map(([cx, cy]) => (
+            <g key={cy}>
+              <path
+                d={`M ${cx - 1.6},${cy} Q ${cx},${cy - 0.9} ${cx + 1.6},${cy}`}
+                fill="none"
+                stroke="#AEB9C6"
+                strokeWidth="0.36"
+                strokeLinecap="round"
+              />
+              <circle cx={cx - 1.6} cy={cy} r="0.42" fill="#B7C2CE" />
+              <circle cx={cx + 1.6} cy={cy} r="0.42" fill="#B7C2CE" />
+            </g>
+          ))}
+        </g>
+      )}
 
       {/* ---------- La campera de cuero ---------- */}
       {jacket && (
@@ -294,7 +406,7 @@ export default function Avatar({ unlocked, x, y, scale = 1 }: AvatarProps) {
       )}
 
       {/* ---------- Brazo derecho (cercano, delante) ---------- */}
-      <Arm sho={R_SHO} elb={R_ELB} wri={R_WRI} jacket={jacket} />
+      <Arm sho={R_SHO} elb={R_ELB} wri={R_WRI} sleeve={sleeve} />
 
       {/* ---------- Cara ---------- */}
       <path
@@ -392,22 +504,24 @@ function Eye({ at, r }: { at: Pt; r: number }) {
   );
 }
 
-/** Brazo: manga corta y antebrazo al aire, o manga de cuero hasta la muneca. */
+/** Brazo: al aire, manga corta, manga de camisa o manga de cuero. */
 function Arm({
   sho,
   elb,
   wri,
-  jacket,
+  sleeve,
   far = false,
 }: {
   sho: Pt;
   elb: Pt;
   wri: Pt;
-  jacket: boolean;
+  sleeve: Sleeve;
   far?: boolean;
 }) {
+  // La camisa y la campera llegan a la muneca; la remera se queda en el hombro
+  const larga = sleeve === "jacket" || sleeve === "shirt";
   const mid: Pt = { x: (sho.x + elb.x) / 2, y: (sho.y + elb.y) / 2 };
-  const cuff: Pt = jacket ? wri : mid;
+  const cuff: Pt = larga ? wri : mid;
 
   return (
     <g opacity={far ? 0.94 : 1}>
@@ -415,10 +529,13 @@ function Arm({
       <path d={tapered(sho, elb, wri, 2.4, 2.1, 1.7)} fill="url(#avSkinLimb)" />
       <ellipse cx={wri.x} cy={wri.y + 1.7} rx="1.9" ry="2.2" fill={far ? SKIN_MID : SKIN} />
 
-      <g className={jacket ? "room-item" : undefined}>
-        {jacket ? (
-          <path d={tapered(sho, elb, cuff, 2.85, 2.4, 2.05)} fill="url(#avLeather)" />
-        ) : (
+      <g className={sleeve !== "tee" ? "room-item" : undefined}>
+        {larga ? (
+          <path
+            d={tapered(sho, elb, cuff, 2.85, 2.4, 2.05)}
+            fill={sleeve === "jacket" ? "url(#avLeather)" : "url(#avSatin)"}
+          />
+        ) : sleeve === "bare" ? null : (
           /* Manga corta: una tapa redondeada sobre el hombro. Con tapered()
              quedaba una solapa despegada del cuerpo, porque el tubo es mas
              ancho que el brazo y arranca por debajo de la linea de hombros. */
@@ -431,11 +548,11 @@ function Arm({
             fill="url(#avTee)"
           />
         )}
-        {jacket && (
+        {larga && (
           <path
             d={`M ${cuff.x - 2.2},${cuff.y - 1.4} Q ${cuff.x},${cuff.y - 0.6} ${cuff.x + 2.2},${cuff.y - 1.4}
                 L ${cuff.x + 2.2},${cuff.y + 0.4} Q ${cuff.x},${cuff.y + 1.2} ${cuff.x - 2.2},${cuff.y + 0.4} Z`}
-            fill={LEATHER_HI}
+            fill={sleeve === "jacket" ? LEATHER_HI : SATIN_S}
             opacity={far ? 0.55 : 0.85}
           />
         )}
@@ -444,12 +561,13 @@ function Arm({
   );
 }
 
-/** Pierna: bermuda de jean + pierna al aire + media, o pantalon largo. */
+/** Pierna: bermuda de jean + media, pantalon largo, o al aire con el vestido. */
 function Leg({
   hip,
   knee,
   ankle,
   pants,
+  dress,
   loafers,
   far = false,
 }: {
@@ -457,6 +575,7 @@ function Leg({
   knee: Pt;
   ankle: Pt;
   pants: boolean;
+  dress: boolean;
   loafers: boolean;
   far?: boolean;
 }) {
@@ -491,7 +610,7 @@ function Leg({
               />
             ))}
         </g>
-      ) : (
+      ) : dress ? null : (
         <>
           {/* Bermuda de jean, hasta media pierna */}
           <path

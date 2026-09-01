@@ -47,6 +47,24 @@ export const gifts: Gift[] = [
     emoji: "💄",
     avatar: { kind: "prop", art: "arqueador" },
   },
+  {
+    id: "camisa-blanca",
+    name: "Camisa blanca",
+    price: 120000,
+    image: "/gifts/camisa-blanca.jpg",
+    link: "https://www.zara.com/ar/es/camisa-satinada-alamares-zw-collection-p04786166.html?v1=546177245&v2=2509470",
+    emoji: "👔",
+    avatar: { kind: "wearable", art: "camisa-blanca" },
+  },
+  {
+    id: "vestido-negro",
+    name: "Vestido negro",
+    price: 120000,
+    image: "/gifts/vestido-negro.jpg",
+    link: "https://www.zara.com/ar/es/vestido-mono-cinturon-p07557539.html?v1=553608751&v2=2509383",
+    emoji: "👗",
+    avatar: { kind: "wearable", art: "vestido-negro" },
+  },
 ];
 
 export function getTotalGoal(): number {

@@ -6,7 +6,9 @@ export type AvatarArt =
   | "campera-cuero"
   | "pantalon-adidas"
   | "mocasines"
-  | "arqueador";
+  | "arqueador"
+  | "camisa-blanca"
+  | "vestido-negro";
 
 export interface GiftAvatar {
   /** wearable = se le pone al avatar | prop = aparece en la comoda */

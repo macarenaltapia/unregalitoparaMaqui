@@ -77,14 +77,24 @@ const DRESSER = isoBox(5.4, 1.8, 6.8, 3.2, 26);
 // Perchero: dos parantes y un riel, contra la pared izquierda
 const RACK_B = 0.55;
 const RACK_H = 44;
-const RACK_LEFT = floorPos(3.4, RACK_B);
-const RACK_RIGHT = floorPos(5.2, RACK_B);
+const RACK_LEFT = floorPos(3.1, RACK_B);
+const RACK_RIGHT = floorPos(5.85, RACK_B);
 
 // Cada prenda tiene su lugar fijo en el riel, asi no saltan de posicion
 // cuando se saca una. Los mocasines van en el piso, a los pies del perchero.
 const RACK_SLOT: Partial<Record<AvatarArt, number>> = {
-  "campera-cuero": 3.8,
-  "pantalon-adidas": 4.75,
+  "pantalon-adidas": 3.45,
+  "campera-cuero": 4.1,
+  "camisa-blanca": 4.75,
+  "vestido-negro": 5.4,
+};
+
+// El vestido y el conjunto camisa+pantalon no pueden convivir: ponerse uno
+// devuelve el otro al perchero, como cuando cambiabas de ropa en el juego.
+const EXCLUYE: Partial<Record<AvatarArt, AvatarArt[]>> = {
+  "vestido-negro": ["camisa-blanca", "pantalon-adidas"],
+  "camisa-blanca": ["vestido-negro"],
+  "pantalon-adidas": ["vestido-negro"],
 };
 const SHOES_AT = floorPos(4.15, 1.5);
 
@@ -108,7 +118,11 @@ export default function SimsRoom({ unlocked }: SimsRoomProps) {
     (art) => art in rackArt && !worn.includes(art),
   );
   const wear = (art: AvatarArt) =>
-    setWorn((w) => (w.includes(art) ? w : [...w, art]));
+    setWorn((w) => {
+      if (w.includes(art)) return w;
+      const fuera = EXCLUYE[art] ?? [];
+      return [...w.filter((a) => !fuera.includes(a)), art];
+    });
 
   return (
     <div className="sims-panel mx-auto max-w-md p-2">
@@ -475,8 +489,8 @@ export default function SimsRoom({ unlocked }: SimsRoomProps) {
           <ellipse
             cx={(RACK_LEFT.x + RACK_RIGHT.x) / 2}
             cy={(RACK_LEFT.y + RACK_RIGHT.y) / 2}
-            rx="24"
-            ry="9"
+            rx="33"
+            ry="12"
             fill="url(#gContact)"
           />
           <RackPost at={RACK_LEFT} />
